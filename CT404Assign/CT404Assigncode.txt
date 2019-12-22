@@ -1,0 +1,274 @@
+<html>
+	<head>
+		<title>CT404Assignment.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+
+<div>SET OF DRAWERS</div>
+
+
+
+		<script src="js/three.js"></script>
+		<script>
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+			var timer1 = 0; //to trigger animation of drawer 1
+			var timer2 = 0; //to trigger animation of drawer 2 - only 2 drawers chosen to move
+			var angle = 0; //required for camera pivot
+			var radius = 15;
+
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+
+//SHAPES
+			var geometryMain1 = new THREE.BoxGeometry( 6, .2, 4);
+			var geometryMain2 = new THREE.BoxGeometry( 0.2, 9, 3.8);
+			var geometryMain3 = new THREE.BoxGeometry( 0.2, 9, 3.8 );
+			var geometryMain4 = new THREE.BoxGeometry( 5.6, 9, .2 );
+			var geometryMain5 = new THREE.BoxGeometry( 6, .2, 4 );
+
+
+
+			var geometryDrawerFront = new THREE.BoxGeometry( 6, 3, .2 );
+			var geometryDrawerBack = new THREE.BoxGeometry( 5.6, 3, .2 );
+			var geometryDrawerSide = new THREE.BoxGeometry( .2, 3, 3.4 );
+			var geometryDrawerBottom = new THREE.BoxGeometry( 5.2, .2, 3.4 );
+
+
+      var geometryHandleSmall = new THREE.CylinderGeometry( .1, .1, .3, .1 );
+
+
+
+			var material = new THREE.MeshBasicMaterial( { color: "red", wireframe: false } );
+			var material1 = new THREE.MeshBasicMaterial( { color: "white", wireframe: true } ); //wireframe set as true to showcase 3D
+			var material2 = new THREE.MeshBasicMaterial( { color: "red", wireframe: true } ); //wireframe set as true to showcase 3D
+			var materialGold = new THREE.MeshBasicMaterial( { color: "gold", wireframe: false } );
+
+
+			//MAIN DRAWER COMPONENTS
+			var cube1 = new THREE.Mesh( geometryMain1, material1 );
+			cube1.position.x = 0;
+			cube1.position.y = -4.5;
+			cube1.position.z = 0;
+			scene.add( cube1 );
+
+			var cube2 = new THREE.Mesh( geometryMain2, material1 );
+			cube2.position.x = -3;
+			cube2.position.y = 0;
+			cube2.position.z = 0;
+			scene.add( cube2 );
+
+			var cube3 = new THREE.Mesh( geometryMain3, material1 );
+			cube3.position.x = 3;
+			cube3.position.y = 0;
+			cube3.position.z = 0;
+			scene.add( cube3 );
+
+			var cube4 = new THREE.Mesh( geometryMain4, material1 );
+			cube4.position.x = 0;
+			cube4.position.y = 0;
+			cube4.position.z = -2;
+			scene.add( cube4 );
+
+			var cube5 = new THREE.Mesh( geometryMain5, material1 );
+			cube5.position.x = 0;
+			cube5.position.y = 4.5;
+			cube5.position.z = 0;
+			scene.add( cube5 );
+
+			//DRAWER COMPONENTS
+				//DRAWER_1
+
+				var dBottom1 = new THREE.Mesh( geometryDrawerBottom, material );
+				dBottom1.position.x = 0;
+				dBottom1.position.y = -4.3;
+				dBottom1.position.z = 0;
+				scene.add( dBottom1 );
+
+				var dSide1A = new THREE.Mesh( geometryDrawerSide, material );
+				dSide1A.position.x = -2.8;
+				dSide1A.position.y = -2.8;
+				dSide1A.position.z = 0;
+				scene.add(dSide1A);
+
+				var dSide1B = new THREE.Mesh( geometryDrawerSide, material );
+				dSide1B.position.x = 2.8;
+				dSide1B.position.y = -2.8;
+				dSide1B.position.z = 0;
+				scene.add(dSide1B);
+
+
+				var dFront1 = new THREE.Mesh( geometryDrawerFront, material );
+				dFront1.position.x = 0;
+				dFront1.position.y = -2.8;
+				dFront1.position.z = 1.6;
+				scene.add(dFront1);
+
+				var dBack1 = new THREE.Mesh( geometryDrawerBack, material );
+				dBack1.position.x = 0;
+				dBack1.position.y = -2.8;
+				dBack1.position.z = -1.8;
+				scene.add(dBack1);
+
+
+				//DRAWER_2
+
+				var dBottom2 = new THREE.Mesh( geometryDrawerBottom, material2 );
+				dBottom2.position.x = 0;
+				dBottom2.position.y = -1.1;
+				dBottom2.position.z = 0;
+				scene.add( dBottom2 );
+
+				var dSide2A = new THREE.Mesh( geometryDrawerSide, material2 );
+				dSide2A.position.x = -2.8;
+				dSide2A.position.y = 0.2;
+				dSide2A.position.z = 0;
+				scene.add( dSide2A );
+
+				var dSide2B = new THREE.Mesh( geometryDrawerSide, material2 );
+				dSide2B.position.x = 2.8;
+				dSide2B.position.y = 0.2;
+				dSide2B.position.z = 0;
+				scene.add( dSide2B );
+
+				var dFront2 = new THREE.Mesh( geometryDrawerFront, material2 );
+				dFront2.position.x = 0;
+				dFront2.position.y = 0.2;
+				dFront2.position.z = 2;
+				scene.add( dFront2 );
+
+				var dBack2 = new THREE.Mesh( geometryDrawerBack, material2 );
+				dBack2.position.x = 0;
+				dBack2.position.y = 0.2;
+				dBack2.position.z = -1.8;
+				scene.add( dBack2 );
+
+				//DRAWER_3
+
+				var dBottom3 = new THREE.Mesh( geometryDrawerBottom, material );
+				dBottom3.position.x = 0;
+				dBottom3.position.y = 1.8;
+				dBottom3.position.z = 0;
+				scene.add( dBottom3 );
+
+				var dSide3A = new THREE.Mesh( geometryDrawerSide, material );
+				dSide3A.position.x = -2.8;
+				dSide3A.position.y = 3;
+				dSide3A.position.z = 0;
+				scene.add( dSide3A );
+
+				var dSide3B = new THREE.Mesh( geometryDrawerSide, material );
+				dSide3B.position.x = 2.8;
+				dSide3B.position.y = 3;
+				dSide3B.position.z = 0;
+				scene.add( dSide3B );
+
+				var dFront3 = new THREE.Mesh( geometryDrawerFront, material );
+				dFront3.position.x = 0;
+				dFront3.position.y = 3;
+				dFront3.position.z = 1.6;
+				scene.add( dFront3 );
+
+				var dBack3 = new THREE.Mesh( geometryDrawerBack, material );
+				dBack3.position.x = 0;
+				dBack3.position.y = 3;
+				dBack3.position.z = -1.8;
+				scene.add( dBack3 );
+
+			//HANDLE COMPONENTS
+
+			var sHandle1 = new THREE.Mesh( geometryHandleSmall, materialGold );
+			sHandle1.position.x = 0;
+			sHandle1.position.y = 3;
+			sHandle1.position.z = 1.8;
+			scene.add( sHandle1 );
+
+			var sHandle2 = new THREE.Mesh( geometryHandleSmall, materialGold );
+			sHandle2.position.x = 0;
+			sHandle2.position.y = 0;
+			sHandle2.position.z = 2.1;
+			scene.add( sHandle2 );
+
+			var sHandle3 = new THREE.Mesh( geometryHandleSmall, materialGold );
+			sHandle3.position.x = 0;
+			sHandle3.position.y = -3;
+			sHandle3.position.z = 1.8;
+			scene.add( sHandle3 );
+
+
+
+
+			var animate = function () {
+				requestAnimationFrame( animate );
+
+//timer1
+				if (timer1 <=100){
+    sHandle3.position.z += 0.02;
+		dBottom1.position.z += 0.02;
+		dSide1A.position.z += 0.02;
+		dSide1B.position.z += 0.02;
+		dFront1.position.z += 0.02;
+		dBack1.position.z += 0.02;
+    timer1++;
+  }
+
+  if (timer1 > 100){
+		sHandle3.position.z -= 0.02;
+		dBottom1.position.z -= 0.02;
+		dSide1A.position.z -= 0.02;
+		dSide1B.position.z -= 0.02;
+		dFront1.position.z -= 0.02;
+		dBack1.position.z -= 0.02;
+    timer1++;
+  }
+
+  if (timer1 > 200){
+    timer1 = 0;
+  }
+
+//timer2
+
+if (timer2 <=100){
+sHandle1.position.z += 0.02;
+dBottom3.position.z += 0.02;
+dSide3A.position.z += 0.02;
+dSide3B.position.z += 0.02;
+dFront3.position.z += 0.02;
+dBack3.position.z += 0.02;
+timer2++;
+}
+
+if (timer2 > 100){
+sHandle1.position.z -= 0.02;
+dBottom3.position.z -= 0.02;
+dSide3A.position.z -= 0.02;
+dSide3B.position.z -= 0.02;
+dFront3.position.z -= 0.02;
+dBack3.position.z -= 0.02;
+timer2++;
+}
+
+if (timer2 > 200){
+timer2 = 0;
+}
+
+//pivoting the camera around 0,0,0
+camera.lookAt( 0, 0, 0 );
+camera.position.x = radius * Math.cos( angle );
+camera.position.z = radius * Math.sin( angle );
+angle += 0.006;
+
+				renderer.render( scene, camera );
+			};
+
+			animate();
+		</script>
+	</body>
+</html>
